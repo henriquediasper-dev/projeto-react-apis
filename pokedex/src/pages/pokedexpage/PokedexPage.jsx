@@ -1,7 +1,7 @@
 export const PokedexPage = () => {
     return (
         <>
-        <h1>PokedexPage</h1>
+        <p>PokedexPage</p>
         </>
     )
 }
