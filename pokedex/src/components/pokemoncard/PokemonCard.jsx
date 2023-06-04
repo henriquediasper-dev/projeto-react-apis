@@ -32,7 +32,7 @@ export const PokemonCard = () => {
         <img src={pokebola} alt="" />
       </CardBox>
 
-      <CapturarButton>Capturar</CapturarButton>
+      <CapturarButton>Capturar!</CapturarButton>
     </Container>
   );
 };
