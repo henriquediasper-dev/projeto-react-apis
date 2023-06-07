@@ -1,14 +1,13 @@
-
-import React from "react"
-import { Header } from "./components/header/Header"
+import React, { useState } from "react";
+import GlobalStyles from "./GlobalStyles";
+import { Router } from "./routes/router";
 
 export const App = () => {
- return(
-  <>
-  <Header />
-  
-  </>
- )  
-}
+  return (
+    <>
+      <GlobalStyles />
 
-
+      <Router />
+    </>
+  );
+};
