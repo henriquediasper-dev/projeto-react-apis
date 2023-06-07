@@ -13,25 +13,42 @@ import {
 import pokebola from "../../assets/pokebolaFundo.svg";
 import tipo1 from "../../assets/normal.svg";
 import snorlax from "../../assets/snorlax.svg";
+import { goToDetailPage } from "../../routes/coordinator";
+import { useNavigate } from "react-router-dom";
+import pokemonTypes from "../../pokemonTypes";
 
-export const PokemonCard = () => {
+export const PokemonCard = ({ name, image, id, types }) => {
+  const navigate = useNavigate();
+
   return (
     <Container>
-      <PokemonImage src={snorlax} alt="Pokemon" />
+      <PokemonImage src={image} alt="Pokemon" />
       <CardBox>
         <InfoBox>
           <BoxInfoAndType>
             <IdPokemon>ID</IdPokemon>
-            <NomePokemon>NOME</NomePokemon>
-            <TypeImage src={tipo1} alt="" />
+            <NomePokemon>
+              {name}
+              {id}
+            </NomePokemon>
+            {types.map((type) => (
+              <TypeImage
+                key={type.type.name}
+                src={pokemonTypes[type.type.name]}
+                alt={type.type.name}
+              />
+            ))}
           </BoxInfoAndType>
-          <DetailButton>
+          <DetailButton
+            onClick={() => {
+              goToDetailPage(navigate);
+            }}
+          >
             <u>Detalhes</u>
           </DetailButton>
         </InfoBox>
-        <img src={pokebola} alt="" />
       </CardBox>
-
+      <temas />
       <CapturarButton>Capturar!</CapturarButton>
     </Container>
   );
