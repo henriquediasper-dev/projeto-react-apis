@@ -29,6 +29,7 @@ export const PokedexButton = styled.button`
   line-height: 1.5rem;
   color: #ffffff;
   cursor: pointer;
+  z-index: 2;
 `;
 
 export const HomeButton = styled.button`
@@ -42,6 +43,7 @@ export const HomeButton = styled.button`
   border: none;
   text-decoration: underline;
   cursor: pointer;
+  z-index: 2;
 `;
 
 export const Lt = styled.img`

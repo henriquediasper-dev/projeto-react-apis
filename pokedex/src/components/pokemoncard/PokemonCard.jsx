@@ -23,7 +23,7 @@ export const PokemonCard = ({ name, image, id, types }) => {
   return (
     <Container>
       <PokemonImage src={image} alt="Pokemon" />
-      <CardBox>
+      <CardBox types={types}>
         <InfoBox>
           <BoxInfoAndType>
             <IdPokemon>ID</IdPokemon>

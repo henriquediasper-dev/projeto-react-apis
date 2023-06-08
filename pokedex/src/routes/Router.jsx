@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PokemonListPage } from "../pages/pokemonListPage/PokemonListPage";
-import { PokemonDetailPage } from "../pages/pokemonDetailPage/PokemonDetailPage";
+import PokemonDetailPage from "../pages/pokemonDetailPage/PokemonDetailPage";
 import { PokedexPage } from "../pages/pokedexPage/PokedexPage";
 import { Header } from "../components/header/Header";
 

@@ -26,6 +26,7 @@ export const PokemonListPage = () => {
       <CardsContainer>
         {pokemons.map((pokemon) => (
           <PokemonCard
+            key={pokemon.id}
             name={pokemon.name}
             id={pokemon.id}
             types={pokemon.types}

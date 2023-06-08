@@ -1,4 +1,15 @@
 import styled from "styled-components";
+import tema from "../../tema";
+
+const getBackgroundColor = (types) => {
+  if (types.length > 0) {
+    if (types[0].type.name === "normal" && types[1]) {
+      return tema.colors.backgroundCard[types[1].type.name];
+    }
+  }
+  return tema.colors.backgroundCard[types[0].type.name] || "#ffffff";
+};
+console.log(tema);
 
 export const Container = styled.div`
   width: 23vw;
@@ -11,7 +22,7 @@ export const Container = styled.div`
 export const CardBox = styled.div`
   width: 29.9vw;
   height: 23vh;
-  background-color: #729f92;
+  background-color: ${({ types }) => getBackgroundColor(types)};
   border-radius: 0.6vw;
   display: flex;
   justify-content: space-between;
