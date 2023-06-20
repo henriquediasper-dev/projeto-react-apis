@@ -5,16 +5,25 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 export const PokemonListPage = () => {
+  // Estado para armazenar os dados dos pokémons
   const [pokemons, setPokemons] = useState([]);
 
   useEffect(() => {
+    // Chamada à API para obter a lista de pokémons
     api.get("/pokemon").then((res) => {
       const results = res.data.results;
       console.log(results);
+
+      // Cria um array de promises para buscar os dados de cada pokémon individualmente
       const promise = results.map((result) => api.get(result.url));
+
+      // Executa todas as promises e aguarda as respostas
       Promise.all(promise).then((responses) => {
+        // Mapeia as respostas e extrai os dados de cada pokémon
         const pokemonData = responses.map((res) => res.data);
         console.log(pokemonData);
+
+        // Atualiza o estado com os dados dos pokémons
         setPokemons(pokemonData);
       });
     });
@@ -22,7 +31,10 @@ export const PokemonListPage = () => {
 
   return (
     <>
+      {/* Título da página */}
       <TituloDaPagina>Todos Pokémons</TituloDaPagina>
+
+      {/* Container para os cards dos pokémons */}
       <CardsContainer>
         {pokemons.map((pokemon) => (
           <PokemonCard

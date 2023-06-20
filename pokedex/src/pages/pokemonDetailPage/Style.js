@@ -1,4 +1,15 @@
 import styled from "styled-components";
+import tema from "../../tema";
+
+export const getBackgroundColor = (types) => {
+  if (types.length > 0) {
+    if (types[0].type.name === "normal" && types[1]) {
+      return tema.colors.backgroundCard[types[1].type.name];
+    }
+  }
+  return tema.colors.backgroundCard[types[0].type.name] || "#ffffff";
+};
+console.log(tema);
 
 export const Container = styled.div`
   width: 100%;
@@ -17,7 +28,7 @@ export const InfosBox = styled.div`
   margin-top: 4%;
   width: 98%;
   height: 90%;
-  background: #729f92;
+  background-color: ${({ types }) => getBackgroundColor(types)};
   border-radius: 1.9vw;
   display: flex;
   position: relative;
@@ -62,6 +73,7 @@ export const Pic1 = styled.div`
   justify-content: center;
   img {
     width: 50%;
+    margin: auto;
   }
 `;
 export const Pic2 = styled.div`
@@ -74,6 +86,7 @@ export const Pic2 = styled.div`
   justify-content: center;
   img {
     width: 50%;
+    margin: auto;
   }
 `;
 

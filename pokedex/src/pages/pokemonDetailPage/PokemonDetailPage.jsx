@@ -21,79 +21,126 @@ import pokeballDetail from "../../assets/pokeballDetailInsideBackground.svg";
 import pokemonImageDetail from "../../assets/pokemonDetailPage.svg";
 import grassType from "../../assets/grassTypeIcon.svg";
 import poisonType from "../../assets/poisonTypeIcon.svg";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { api } from "../../api";
+import pokemonTypes from "../../pokemonTypes";
 
 export default function PokemonDetailPage() {
+  const [pokemon, setPokemon] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const status = [45, 49, 49, 65, 65, 45];
   const moves = ["Razor Wind", "Sword Dance", "Cut", "Vine Whip"];
+  const id = useParams();
+  console.log(id);
+
+  useEffect(() => {
+    api
+      .get("/pokemon/" + id.id)
+      .then((response) => {
+        setPokemon(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  console.log(pokemon);
+  if (loading) {
+    return (
+      <>
+        <p>Carregando...</p>
+      </>
+    );
+  }
+
+  let moveCount = 0;
+
+  let total = 0;
+  if (!loading) {
+    for (const stat of pokemon.stats) {
+      total += stat.base_stat;
+    }
+  }
+
   return (
     <>
-      <h1>Detalhes</h1>
       <PokeBallBackground src={pokeballBackground} alt="" />
       <Container>
-        <InfosBox>
+        <InfosBox types={pokemon.types}>
           <PokeballDetail src={pokeballDetail} alt="pokeball" />
-          <PokemonImage src={pokemonImageDetail} alt="" />
+          <PokemonImage
+            src={pokemon.sprites.other["official-artwork"].front_default}
+            alt=""
+          />
 
           <InfosContainer>
             <PicsContainer>
               <Pic1>
-                <img src={pokemonImageDetail} alt="" />
+                <img
+                  src={
+                    pokemon.sprites.versions["generation-v"]["black-white"]
+                      .animated.front_default
+                  }
+                  alt=""
+                />
               </Pic1>
               <Pic2>
-                <img src={pokemonImageDetail} alt="" />
+                <img
+                  src={
+                    pokemon.sprites.versions["generation-v"]["black-white"]
+                      .animated.back_default
+                  }
+                  alt=""
+                />
               </Pic2>
             </PicsContainer>
             <StatsContainer>
-              <h2>Base stats</h2>
-              <Stats>
-                <span>HP</span>
-                <span>{status[0]}</span>
+              <h2>Estatísticas Básicas</h2>
+              {pokemon.stats.map((stat) => {
+                let statName = stat.stat.name;
+                if (statName === "special-attack") statName = "Sp. Atk";
+                else if (statName === "special-defense") statName = "Sp. Def";
+                else
+                  statName =
+                    statName.charAt(0).toUpperCase() + statName.slice(1);
 
-                <ProgressBar stat={status[0]}></ProgressBar>
-              </Stats>
+                return (
+                  <Stats>
+                    <span>{statName}</span>
+                    <span>{stat.base_stat}</span>
+                    <ProgressBar stat={stat.base_stat}></ProgressBar>
+                  </Stats>
+                );
+              })}
               <Stats>
-                <span>Attack</span>
-                <span>{status[1]}</span>
-                <ProgressBar stat={status[1]}></ProgressBar>
-              </Stats>
-              <Stats>
-                <span>Defense</span>
-                <span>{status[2]}</span>
-                <ProgressBar stat={status[2]}></ProgressBar>
-              </Stats>
-              <Stats>
-                <span>Sp. Atk</span>
-                <span>{status[3]}</span>
-                <ProgressBar stat={status[3]}></ProgressBar>
-              </Stats>
-              <Stats>
-                <span>Sp. Def</span>
-                <span>{status[4]}</span>
-                <ProgressBar stat={status[4]}></ProgressBar>
-              </Stats>
-              <Stats>
-                <span>Speed</span>
-                <span>{status[5]}</span>
-                <ProgressBar stat={status[5]}></ProgressBar>
-              </Stats>
-              <Stats>
-                <p>Total</p>
-                <span>318</span>
+                <p style={{ fontWeight: "bold" }}>Total:</p>
+                <span>{total}</span>
               </Stats>
             </StatsContainer>
             <MovesAndInfosContainer>
               <NameIdTypeBox>
-                <p>#01</p>
-                <p>Bulbasaur</p>
+                <p>{pokemon.id}</p>
+                <p>{pokemon.name}</p>
                 <TypesBox>
-                  <img src={grassType} alt="" />
-                  <img src={poisonType} alt="" />
+                  {pokemon.types.map((type) => {
+                    return (
+                      <img
+                        src={pokemonTypes[type.type.name]}
+                        key={type.type.name}
+                      />
+                    );
+                  })}
                 </TypesBox>
               </NameIdTypeBox>
               <MovesBox>
-                <h2>Moves:</h2>
-                {moves.map((move) => {
-                  return <p>{move}</p>;
+                <h2 style={{ fontWeight: "bold" }}>Movimentos:</h2>
+                {pokemon.moves.map((move, i) => {
+                  if (moveCount < 6) {
+                    moveCount++;
+                    return <p key={i}>{move.move.name}</p>;
+                  }
                 })}
               </MovesBox>
             </MovesAndInfosContainer>
