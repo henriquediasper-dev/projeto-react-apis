@@ -1,12 +1,13 @@
 import { PokemonCard } from "../../components/pokemoncard/PokemonCard";
 import { CardsContainer, TituloDaPagina } from "./Style";
 import { api } from "../../api";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
+import { GlobalContext } from "../../context/globalContext";
 
 export const PokemonListPage = () => {
   // Estado para armazenar os dados dos pokémons
-  const [pokemons, setPokemons] = useState([]);
+  const { pokemons, setPokemons } = useContext(GlobalContext);
 
   useEffect(() => {
     // Chamada à API para obter a lista de pokémons
