@@ -5,6 +5,10 @@ import { PokemonCard } from "../../components/pokemoncard/PokemonCard";
 export const PokedexPage = () => {
   const { pokedex } = useContext(GlobalContext);
 
+  const handleRemove = (pokemonId) => {
+    releasePokemon(pokemonId);
+  };
+
   return (
     <>
       {pokedex.map((pokemon) => (
@@ -14,6 +18,7 @@ export const PokedexPage = () => {
           id={pokemon.id}
           types={pokemon.types}
           image={pokemon.image}
+          onRemove={() => handleRemove(pokemon.id)}
         ></PokemonCard>
       ))}
     </>

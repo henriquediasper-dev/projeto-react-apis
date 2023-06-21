@@ -24,19 +24,20 @@ import { GlobalContext } from "../../context/globalContext";
 import { useEffect } from "react";
 
 export const PokemonCard = ({ name, image, id, types }) => {
-  const [pokemonOnPokedex, setPokemonOnPokedex] = useState(true);
-  const { pokedex } = useContext(GlobalContext);
-  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [pokemonOnPokedex, setPokemonOnPokedex] = useState(true); // Define um estado para pokemonOnPokedex
+  const { pokedex, releasePokemon } = useContext(GlobalContext); // Obtém o contexto pokedex e a função releasePokemon
+  const navigate = useNavigate(); // Obtém a função navigate do react-router-dom
 
-  const pokemon = { name: name, image: image, id: id, types: types };
-  const { catchPokemon } = useContext(GlobalContext);
+  const pokemon = { name: name, image: image, id: id, types: types }; // Cria um objeto pokemon com as propriedades
+  const { catchPokemon } = useContext(GlobalContext); // Obtém a função catchPokemon do contexto
 
   const OverlayOne = () => (
     <ModalOverlay
       bg="blackAlpha.300"
       backdropFilter="blur(10px) hue-rotate(90deg)"
     />
-  );
+  ); // Componente OverlayOne com um estilo específico para o ModalOverlay
 
   const OverlayTwo = () => (
     <ModalOverlay
@@ -45,22 +46,33 @@ export const PokemonCard = ({ name, image, id, types }) => {
       backdropInvert="10%"
       backdropBlur="3px"
     />
-  );
+  ); // Componente OverlayTwo com outro estilo específico para o ModalOverlay
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [overlay, setOverlay] = useState(<OverlayOne />);
+  // const { isOpen, onOpen, onClose } = useDisclosure(); // Obtém os estados e as funções do hook useDisclosure
+  const [overlay, setOverlay] = useState(<OverlayOne />); // Define um estado para overlay
 
   useEffect(() => {
     if (location.pathname === "/") {
-      setPokemonOnPokedex(pokedex.find((pokemon) => pokemon.id === id));
+      setPokemonOnPokedex(pokedex.find((pokemon) => pokemon.id === id)); // Atualiza o estado de pokemonOnPokedex com base no valor retornado de pokedex.find
     }
-  });
+  }); // Executa um efeito quando o componente é renderizado
+
+  // Função para lidar com o clique no botão
+  const handleButtonClick = () => {
+    if (pokemonOnPokedex) {
+      // Remova o Pokémon da Pokédex
+      releasePokemon(id);
+    } else {
+      // Capture o Pokémon e adicione-o à Pokédex
+      catchPokemon(pokemon, setIsOpen);
+    }
+  };
 
   return (
     <>
       <Flex
         h={"16.438rem"}
-        w={"27.5rem"}
+        w={"26.5rem"}
         alignItems={"flex-end"}
         position={"relative"}
       >
@@ -134,37 +146,35 @@ export const PokemonCard = ({ name, image, id, types }) => {
             src={pokebola}
             alt=""
           />
-          {!pokemonOnPokedex && (
-            <Button
-              w={"9.125rem"}
-              h={"2.375rem"}
-              fontWeight={400}
-              position={"absolute"}
-              right={"1.375rem"}
-              bottom={"1.25rem"}
-              fontSize={"1rem"}
-              fontFamily={"Poppins"}
-              onClick={() => {
-                catchPokemon(pokemon);
-                setOverlay(<OverlayTwo />);
-                onOpen();
-              }}
-            >
-              Capturar!
-            </Button>
-          )}
+          <Button
+            w={"9.125rem"}
+            h={"2.375rem"}
+            fontWeight={400}
+            position={"absolute"}
+            right={"1.375rem"}
+            bottom={"1.25rem"}
+            fontSize={"1rem"}
+            fontFamily={"Poppins"}
+            onClick={handleButtonClick}
+          >
+            {pokemonOnPokedex ? "Remover!" : "Capturar!"}
+          </Button>
         </Box>
       </Flex>
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal isCentered isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {overlay}
         <ModalContent>
           <ModalHeader>Gotcha!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>O pokemon foi adicionado à sua pokédex</Text>
+            <Text>
+              {pokemonOnPokedex
+                ? "O pokemon foi removido da sua pokédex"
+                : "O pokemon foi adicionado à sua pokédex"}
+            </Text>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={() => setIsOpen(false)}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

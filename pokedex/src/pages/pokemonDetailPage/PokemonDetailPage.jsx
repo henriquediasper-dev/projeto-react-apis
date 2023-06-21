@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api";
 import pokemonTypes from "../../pokemonTypes";
+import pokeBallGif from "../../assets/pokeball-gif.gif";
 
 export default function PokemonDetailPage() {
   const [pokemon, setPokemon] = useState({});
@@ -39,8 +40,10 @@ export default function PokemonDetailPage() {
     api
       .get("/pokemon/" + id.id)
       .then((response) => {
-        setPokemon(response.data);
-        setLoading(false);
+        setTimeout(() => {
+          setPokemon(response.data);
+          setLoading(false);
+        }, 2000);
       })
       .catch((error) => {
         console.log(error);
@@ -50,7 +53,7 @@ export default function PokemonDetailPage() {
   if (loading) {
     return (
       <>
-        <p>Carregando...</p>
+        <img src={pokeBallGif} alt="pokebola" />
       </>
     );
   }
