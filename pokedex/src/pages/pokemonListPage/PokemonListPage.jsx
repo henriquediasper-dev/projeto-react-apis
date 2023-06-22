@@ -5,35 +5,49 @@ import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { GlobalContext } from "../../context/globalContext";
 import pokeBallGif from "../../assets/pokeball-gif.gif";
+import { Flex, Button, Spacer } from "@chakra-ui/react";
 
 export const PokemonListPage = () => {
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [previous, setPrevious] = useState(true);
+  const [next, setNext] = useState(true);
+
   // Estado para armazenar os dados dos pokémons
   const { pokemons, setPokemons } = useContext(GlobalContext);
 
   useEffect(() => {
     // Chamada à API para obter a lista de pokémons
     setLoading(true);
-    api.get("/pokemon").then((res) => {
-      const results = res.data.results;
-      console.log(results);
+    api
+      .get("/pokemon/", {
+        params: {
+          limit: 30,
+          offset: page * 30,
+        },
+      })
+      .then((res) => {
+        const results = res.data.results;
+        setPrevious(res.data.previous);
+        setNext(res.data.next);
+        console.log(results);
 
-      // Cria um array de promises para buscar os dados de cada pokémon individualmente
-      const promise = results.map((result) => api.get(result.url));
+        // Cria um array de promises para buscar os dados de cada pokémon individualmente
+        const promise = results.map((result) => api.get(result.url));
 
-      // Executa todas as promises e aguarda as respostas
-      Promise.all(promise).then((responses) => {
-        // Mapeia as respostas e extrai os dados de cada pokémon
-        const pokemonData = responses.map((res) => res.data);
+        // Executa todas as promises e aguarda as respostas
+        Promise.all(promise).then((responses) => {
+          // Mapeia as respostas e extrai os dados de cada pokémon
+          const pokemonData = responses.map((res) => res.data);
 
-        // Atualiza o estado com os dados dos pokémons
-        setTimeout(() => {
-          setPokemons(pokemonData);
-          setLoading(false);
-        }, 2000);
+          // Atualiza o estado com os dados dos pokémons
+          setTimeout(() => {
+            setPokemons(pokemonData);
+            setLoading(false);
+          }, 2000);
+        });
       });
-    });
-  }, []);
+  }, [page]);
 
   if (loading) {
     return (
@@ -60,6 +74,15 @@ export const PokemonListPage = () => {
           ></PokemonCard>
         ))}
       </CardsContainer>
+      <Flex justifyContent="space-between" marginTop="1rem" padding="1rem">
+        <Button hidden={!previous} onClick={() => setPage(page - 1)}>
+          Anterior
+        </Button>
+        {/* <Spacer /> */}
+        <Button disabled={!next} onClick={() => setPage(page + 1)}>
+          Proximo
+        </Button>
+      </Flex>
     </>
   );
 };

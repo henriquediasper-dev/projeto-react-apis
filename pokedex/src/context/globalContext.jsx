@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createContext } from "react";
 
 export const GlobalContext = createContext();
+
 const GlobalContextProvider = ({ children }) => {
   const [pokedex, setPokedex] = useState([]);
   const [pokemonGlobal, setPokemonGlobal] = useState({});
