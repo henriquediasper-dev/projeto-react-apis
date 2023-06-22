@@ -4,13 +4,16 @@ import { api } from "../../api";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { GlobalContext } from "../../context/globalContext";
+import pokeBallGif from "../../assets/pokeball-gif.gif";
 
 export const PokemonListPage = () => {
+  const [loading, setLoading] = useState(true);
   // Estado para armazenar os dados dos pokémons
   const { pokemons, setPokemons } = useContext(GlobalContext);
 
   useEffect(() => {
     // Chamada à API para obter a lista de pokémons
+    setLoading(true);
     api.get("/pokemon").then((res) => {
       const results = res.data.results;
       console.log(results);
@@ -22,13 +25,23 @@ export const PokemonListPage = () => {
       Promise.all(promise).then((responses) => {
         // Mapeia as respostas e extrai os dados de cada pokémon
         const pokemonData = responses.map((res) => res.data);
-        console.log(pokemonData);
 
         // Atualiza o estado com os dados dos pokémons
-        setPokemons(pokemonData);
+        setTimeout(() => {
+          setPokemons(pokemonData);
+          setLoading(false);
+        }, 2000);
       });
     });
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <img src={pokeBallGif} alt="pokebola" />
+      </>
+    );
+  }
 
   return (
     <>

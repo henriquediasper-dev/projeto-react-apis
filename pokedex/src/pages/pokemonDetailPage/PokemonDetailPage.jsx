@@ -49,7 +49,7 @@ export default function PokemonDetailPage() {
         console.log(error);
       });
   }, []);
-  console.log(pokemon);
+
   if (loading) {
     return (
       <>
@@ -101,7 +101,7 @@ export default function PokemonDetailPage() {
             </PicsContainer>
             <StatsContainer>
               <h2>Estatísticas Básicas</h2>
-              {pokemon.stats.map((stat) => {
+              {pokemon.stats.map((stat, i) => {
                 let statName = stat.stat.name;
                 if (statName === "special-attack") statName = "Sp. Atk";
                 else if (statName === "special-defense") statName = "Sp. Def";
@@ -110,7 +110,7 @@ export default function PokemonDetailPage() {
                     statName.charAt(0).toUpperCase() + statName.slice(1);
 
                 return (
-                  <Stats>
+                  <Stats key={i}>
                     <span>{statName}</span>
                     <span>{stat.base_stat}</span>
                     <ProgressBar stat={stat.base_stat}></ProgressBar>
