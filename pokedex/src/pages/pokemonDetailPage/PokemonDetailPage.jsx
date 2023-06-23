@@ -1,5 +1,6 @@
 import pokeballBackground from "../../assets/bigPokebola.svg";
 import {
+  ChamanderGifLoading,
   Container,
   InfosBox,
   InfosContainer,
@@ -25,7 +26,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api";
 import pokemonTypes from "../../pokemonTypes";
-import pokeBallGif from "../../assets/pokeball-gif.gif";
+import charmanderGif from "../../assets/slap-ricky-berwick-gif.gif";
 
 export default function PokemonDetailPage() {
   const [pokemon, setPokemon] = useState({});
@@ -43,7 +44,7 @@ export default function PokemonDetailPage() {
         setTimeout(() => {
           setPokemon(response.data);
           setLoading(false);
-        }, 2000);
+        }, 5000);
       })
       .catch((error) => {
         console.log(error);
@@ -52,9 +53,9 @@ export default function PokemonDetailPage() {
 
   if (loading) {
     return (
-      <>
-        <img src={pokeBallGif} alt="pokebola" />
-      </>
+      <ChamanderGifLoading>
+        <img src={charmanderGif} alt="pokebola" />
+      </ChamanderGifLoading>
     );
   }
 

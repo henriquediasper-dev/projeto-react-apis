@@ -1,10 +1,10 @@
 import { PokemonCard } from "../../components/pokemoncard/PokemonCard";
-import { CardsContainer, TituloDaPagina } from "./Style";
+import { CardsContainer, PikachuGifLoading, TituloDaPagina } from "./Style";
 import { api } from "../../api";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { GlobalContext } from "../../context/globalContext";
-import pokeBallGif from "../../assets/pokeball-gif.gif";
+import pikachuGif from "../../assets/slap-ricky-berwick-gif.gif";
 import { Flex, Button, Spacer } from "@chakra-ui/react";
 
 export const PokemonListPage = () => {
@@ -16,8 +16,8 @@ export const PokemonListPage = () => {
   // Estado para armazenar os dados dos pokémons
   const { pokemons, setPokemons } = useContext(GlobalContext);
 
+  // Chamada à API para obter a lista de pokémons
   useEffect(() => {
-    // Chamada à API para obter a lista de pokémons
     setLoading(true);
     api
       .get("/pokemon/", {
@@ -44,16 +44,16 @@ export const PokemonListPage = () => {
           setTimeout(() => {
             setPokemons(pokemonData);
             setLoading(false);
-          }, 2000);
+          }, 3000);
         });
       });
   }, [page]);
 
   if (loading) {
     return (
-      <>
-        <img src={pokeBallGif} alt="pokebola" />
-      </>
+      <PikachuGifLoading>
+        <img src={pikachuGif} alt="pokebola" />
+      </PikachuGifLoading>
     );
   }
 
