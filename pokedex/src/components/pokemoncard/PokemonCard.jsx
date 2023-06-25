@@ -24,13 +24,13 @@ import { GlobalContext } from "../../context/globalContext";
 import { useEffect } from "react";
 
 export const PokemonCard = ({ name, image, id, types }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const [pokemonOnPokedex, setPokemonOnPokedex] = useState(true); // Define um estado para pokemonOnPokedex
   const { pokedex, releasePokemon } = useContext(GlobalContext); // Obtém o contexto pokedex e a função releasePokemon
   const navigate = useNavigate(); // Obtém a função navigate do react-router-dom
 
   const pokemon = { name: name, image: image, id: id, types: types }; // Cria um objeto pokemon com as propriedades
-  const { catchPokemon } = useContext(GlobalContext); // Obtém a função catchPokemon do contexto
+  const { catchPokemon, setPokemonGlobal } = useContext(GlobalContext); // Obtém a função catchPokemon do contexto
 
   const OverlayOne = () => (
     <ModalOverlay
@@ -48,8 +48,8 @@ export const PokemonCard = ({ name, image, id, types }) => {
     />
   ); // Componente OverlayTwo com outro estilo específico para o ModalOverlay
 
-  // const { isOpen, onOpen, onClose } = useDisclosure(); // Obtém os estados e as funções do hook useDisclosure
-  const [overlay, setOverlay] = useState(<OverlayOne />); // Define um estado para overlay
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Obtém os estados e as funções do hook useDisclosure
+  const [overlay, setOverlay] = useState(<OverlayTwo />); // Define um estado para overlay
 
   useEffect(() => {
     if (location.pathname === "/") {
@@ -59,12 +59,13 @@ export const PokemonCard = ({ name, image, id, types }) => {
 
   // Função para lidar com o clique no botão
   const handleButtonClick = () => {
+    onClose();
     if (pokemonOnPokedex) {
       // Remova o Pokémon da Pokédex
       releasePokemon(id);
     } else {
       // Capture o Pokémon e adicione-o à Pokédex
-      catchPokemon(pokemon, setIsOpen);
+      catchPokemon(pokemon);
     }
   };
 
@@ -79,7 +80,7 @@ export const PokemonCard = ({ name, image, id, types }) => {
         <Image
           h="12.063rem"
           w="12.063rem"
-          src={image}
+          src={pokemon.image}
           alt=""
           zIndex={1}
           position={"absolute"}
@@ -91,7 +92,9 @@ export const PokemonCard = ({ name, image, id, types }) => {
           position={"relative"}
           h={"13.125rem"}
           w={"27.5rem"}
-          backgroundColor={tema.colors.backgroundCard[types[0].type.name]}
+          backgroundColor={
+            tema.colors.backgroundCard[pokemon.types[0].type.name]
+          }
           borderRadius={"0.75rem"}
         >
           <Text
@@ -101,7 +104,7 @@ export const PokemonCard = ({ name, image, id, types }) => {
             top={"1.563rem"}
             left={"1.438rem"}
           >
-            #{id}
+            #{pokemon.id}
           </Text>
           <Text
             fontSize={"2rem"}
@@ -110,10 +113,10 @@ export const PokemonCard = ({ name, image, id, types }) => {
             top={"2.5rem"}
             left={"1.438rem"}
           >
-            {name}
+            {pokemon.name}
           </Text>
           <Flex position={"absolute"} left={"1.438rem"} top={"5.563rem"}>
-            {types.map((type) => (
+            {pokemon.types.map((type) => (
               <Image
                 key={type.type.name}
                 src={pokemonTypes[type.type.name]}
@@ -133,6 +136,7 @@ export const PokemonCard = ({ name, image, id, types }) => {
             _active={"none"}
             zIndex={2}
             onClick={() => {
+              setPokemonGlobal(pokemon);
               goToDetailPage(navigate, id);
             }}
           >
@@ -155,13 +159,14 @@ export const PokemonCard = ({ name, image, id, types }) => {
             bottom={"1.25rem"}
             fontSize={"1rem"}
             fontFamily={"Poppins"}
-            onClick={handleButtonClick}
+            background={pokemonOnPokedex && "#FF6262"}
+            onClick={() => onOpen()}
           >
             {pokemonOnPokedex ? "Remover!" : "Capturar!"}
           </Button>
         </Box>
       </Flex>
-      <Modal isCentered isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal isCentered isOpen={isOpen} onClose={() => handleButtonClick()}>
         {overlay}
         <ModalContent>
           <ModalHeader>Gotcha!</ModalHeader>
@@ -174,7 +179,7 @@ export const PokemonCard = ({ name, image, id, types }) => {
             </Text>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={() => setIsOpen(false)}>Close</Button>
+            <Button onClick={handleButtonClick}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

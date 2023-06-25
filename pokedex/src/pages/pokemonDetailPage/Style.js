@@ -186,3 +186,10 @@ export const MovesBox = styled.div`
     width: fit-content;
   }
 `;
+
+export const ChamanderGifLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+`;

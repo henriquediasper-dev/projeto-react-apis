@@ -18,3 +18,10 @@ export const CardsContainer = styled.div`
   flex-wrap: wrap;
   gap: 1vw;
 `;
+
+export const PikachuGifLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+`;
