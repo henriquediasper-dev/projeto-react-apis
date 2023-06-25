@@ -4,7 +4,7 @@ import {
   ButtonAddPokemon,
   ButtonRemovePokemon,
   Container,
-  HomeButton,
+  HomeStyledButton,
   Logo,
   Lt,
   PokedexButton,
@@ -29,12 +29,13 @@ import {
 } from "@chakra-ui/react";
 
 export const Header = () => {
-  const navigate = useNavigate();
+  // Importação de hooks e contexto necessários
+  const navigate = useNavigate(); // Hook de navegação do React Router
   const { pokemonGlobal, catchPokemon, releasePokemon, pokedex } =
-    useContext(GlobalContext);
-  const [selectButton, setSelectButton] = useState("");
+    useContext(GlobalContext); // Uso do contexto GlobalContext para acessar os dados e funções necessárias
+  const [selectButton, setSelectButton] = useState(""); // Estado local para controlar o botão selecionado
 
-  const location = useLocation();
+  const location = useLocation(); // Hook do React Router para obter a localização atual da página
 
   const OverlayTwo = () => (
     <ModalOverlay
@@ -67,14 +68,14 @@ export const Header = () => {
   return (
     <Container>
       {location.pathname !== "/" && (
-        <HomeButton
+        <HomeStyledButton
           onClick={() => {
             goToHome(navigate);
           }}
         >
           <Lt src={menorQue} alt="" />
           <u>Todos Pokemons</u>
-        </HomeButton>
+        </HomeStyledButton>
       )}
       <Logo src={logo} alt="logo pomekon" />
 

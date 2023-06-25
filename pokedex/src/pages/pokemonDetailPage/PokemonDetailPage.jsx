@@ -19,9 +19,6 @@ import {
   TypesBox,
 } from "./Style";
 import pokeballDetail from "../../assets/pokeballDetailInsideBackground.svg";
-import pokemonImageDetail from "../../assets/pokemonDetailPage.svg";
-import grassType from "../../assets/grassTypeIcon.svg";
-import poisonType from "../../assets/poisonTypeIcon.svg";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api";
@@ -29,22 +26,23 @@ import pokemonTypes from "../../pokemonTypes";
 import charmanderGif from "../../assets/slap-ricky-berwick-gif.gif";
 
 export default function PokemonDetailPage() {
-  const [pokemon, setPokemon] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [pokemon, setPokemon] = useState({}); // Estado para armazenar os dados do Pokémon
+  const [loading, setLoading] = useState(true); // Estado para indicar se os dados estão sendo carregados
 
-  const status = [45, 49, 49, 65, 65, 45];
-  const moves = ["Razor Wind", "Sword Dance", "Cut", "Vine Whip"];
-  const id = useParams();
-  console.log(id);
+  // const status = [45, 49, 49, 65, 65, 45]; // Array com os valores dos status do Pokémon
+  // const moves = ["Razor Wind", "Sword Dance", "Cut", "Vine Whip"]; // Array com os movimentos do Pokémon
 
+  const id = useParams(); // Obtém o parâmetro 'id' da URL usando o hook useParams()
+
+  // Efeito para fazer a requisição à API quando o componente é montado
   useEffect(() => {
     api
-      .get("/pokemon/" + id.id)
+      .get("/pokemon/" + id.id) // Concatena o parâmetro 'id' na URL da requisição
       .then((response) => {
         setTimeout(() => {
-          setPokemon(response.data);
-          setLoading(false);
-        }, 5000);
+          setPokemon(response.data); // Atualiza o estado 'pokemon' com os dados da resposta
+          setLoading(false); // Define 'loading' como falso para indicar que os dados foram carregados
+        }, 3000); // Atraso de 3 segundos para simular o carregamento dos dados
       })
       .catch((error) => {
         console.log(error);
@@ -52,6 +50,7 @@ export default function PokemonDetailPage() {
   }, []);
 
   if (loading) {
+    // Se 'loading' for verdadeiro, mostra um elemento JSX enquanto os dados estão sendo carregados
     return (
       <ChamanderGifLoading>
         <img src={charmanderGif} alt="pokebola" />
@@ -59,18 +58,22 @@ export default function PokemonDetailPage() {
     );
   }
 
-  let moveCount = 0;
+  let moveCount = 0; // variável para contar os movimentos
 
-  let total = 0;
+  let total = 0; // variável que armazena o valor totals dos stats do pokémon
   if (!loading) {
+    // Se loading for falso (ou seja, os dados foram carregados)
     for (const stat of pokemon.stats) {
-      total += stat.base_stat;
+      //loop pelos stats do pokemon
+      total += stat.base_stat; // Soma o valor 'base_stat' de cada stat a 'total'
     }
   }
 
   return (
     <>
+      {/* Renderização do plano de fundo da Pokébola */}
       <PokeBallBackground src={pokeballBackground} alt="" />
+
       <Container>
         <InfosBox types={pokemon.types}>
           <PokeballDetail src={pokeballDetail} alt="pokeball" />
@@ -102,9 +105,12 @@ export default function PokemonDetailPage() {
             </PicsContainer>
             <StatsContainer>
               <h2>Estatísticas Básicas</h2>
+              {/* Mapeamento das estatísticas do Pokémon */}
               {pokemon.stats.map((stat, i) => {
                 let statName = stat.stat.name;
-                if (statName === "special-attack") statName = "Sp. Atk";
+                if (statName === "special-attack")
+                  statName =
+                    "Sp. Atk"; // tratamento dos nomes das estatisticas especiais
                 else if (statName === "special-defense") statName = "Sp. Def";
                 else
                   statName =
@@ -128,6 +134,7 @@ export default function PokemonDetailPage() {
                 <p>{pokemon.id}</p>
                 <p>{pokemon.name}</p>
                 <TypesBox>
+                  {/* exibicao dos tipos de pokemons*/}
                   {pokemon.types.map((type) => {
                     return (
                       <img
@@ -140,6 +147,7 @@ export default function PokemonDetailPage() {
               </NameIdTypeBox>
               <MovesBox>
                 <h2 style={{ fontWeight: "bold" }}>Movimentos:</h2>
+                {/* Mapeamento dos movimentos do Pokémon */}
                 {pokemon.moves.map((move, i) => {
                   if (moveCount < 6) {
                     moveCount++;

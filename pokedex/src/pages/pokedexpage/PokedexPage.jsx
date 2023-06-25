@@ -4,15 +4,16 @@ import { PokemonCard } from "../../components/pokemoncard/PokemonCard";
 import { CardsContainer } from "../pokemonListPage/Style";
 
 export const PokedexPage = () => {
-  const { pokedex } = useContext(GlobalContext);
+  const { pokedex } = useContext(GlobalContext); // Obtendo o estado 'pokedex' do contexto global
 
   const handleRemove = (pokemonId) => {
-    releasePokemon(pokemonId);
+    releasePokemon(pokemonId); // Função para remover um Pokémon da Pokédex
   };
 
   return (
     <>
       <CardsContainer>
+        {/* Renderizando os Pokémon da Pokédex */}
         {pokedex.map((pokemon) => (
           <PokemonCard
             key={pokemon.id}

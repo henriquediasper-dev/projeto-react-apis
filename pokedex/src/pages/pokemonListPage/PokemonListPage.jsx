@@ -59,11 +59,9 @@ export const PokemonListPage = () => {
 
   return (
     <>
-      {/* Título da página */}
       <TituloDaPagina>Todos Pokémons</TituloDaPagina>
-
-      {/* Container para os cards dos pokémons */}
       <CardsContainer>
+        {/* Renderização dos cards de Pokémon */}
         {pokemons.map((pokemon) => (
           <PokemonCard
             key={pokemon.id}
@@ -78,6 +76,7 @@ export const PokemonListPage = () => {
         <Button hidden={!previous} onClick={() => setPage(page - 1)}>
           Anterior
         </Button>
+        {/* Espaçador ou alternativa para o justifyContent="space-between" */}
         {/* <Spacer /> */}
         <Button disabled={!next} onClick={() => setPage(page + 1)}>
           Proximo

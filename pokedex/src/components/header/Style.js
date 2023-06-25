@@ -32,7 +32,7 @@ export const PokedexButton = styled.button`
   z-index: 2;
 `;
 
-export const HomeButton = styled.button`
+export const HomeStyledButton = styled.button`
   grid-column: 2/5;
   font-family: "Poppins", sans-serif;
   font-size: 1.4rem;
