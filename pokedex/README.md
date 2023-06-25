@@ -40,9 +40,9 @@ Header deve ter um botão para adicionar ou remover da Pokedex e outro para volt
 
 Link para o projeto: https://pokedex-henriquediasper.surge.sh/
 
-<img src="./src/assets/pagina-inicial.png>
-<img src="./src/assets/pagina-inicial2.png>
-<img src="./src/assets/pokemon-capturado.png>
-<img src="./src/assets/pagina-de-detalhes.png>
-<img src="./src/assets/pagina-pokedex.png>
-<img src="./src/assets/pokemon-excluido.png>
+<img src="./src/assets/pagina-inicial.png">
+<img src="./src/assets/pagina-inicial2.png">
+<img src="./src/assets/pokemon-capturado.png">
+<img src="./src/assets/pagina-de-detalhes.png">
+<img src="./src/assets/pagina-pokedex.png">
+<img src="./src/assets/pokemon-excluido.png">
