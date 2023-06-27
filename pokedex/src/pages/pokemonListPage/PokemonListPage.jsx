@@ -4,7 +4,7 @@ import { api } from "../../api";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { GlobalContext } from "../../context/globalContext";
-import pikachuGif from "../../assets/slap-ricky-berwick-gif.gif";
+import pikachuGif from "../../assets/going-crazy-stupid-gif.gif";
 import { Flex, Button, Spacer } from "@chakra-ui/react";
 
 export const PokemonListPage = () => {

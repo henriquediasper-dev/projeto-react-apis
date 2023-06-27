@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api";
 import pokemonTypes from "../../pokemonTypes";
-import charmanderGif from "../../assets/slap-ricky-berwick-gif.gif";
+import charmanderGif from "../../assets/charmander-pokemon3-gif.gif";
 
 export default function PokemonDetailPage() {
   const [pokemon, setPokemon] = useState({}); // Estado para armazenar os dados do Pokémon
@@ -108,9 +108,8 @@ export default function PokemonDetailPage() {
               {/* Mapeamento das estatísticas do Pokémon */}
               {pokemon.stats.map((stat, i) => {
                 let statName = stat.stat.name;
-                if (statName === "special-attack")
-                  statName =
-                    "Sp. Atk"; // tratamento dos nomes das estatisticas especiais
+                if (statName === "special-attack") statName = "Sp. Atk";
+                // tratamento dos nomes das estatisticas especiais
                 else if (statName === "special-defense") statName = "Sp. Def";
                 else
                   statName =
